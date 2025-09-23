@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chinasaqra Andina - Auténtica Moda Andina Peruana</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #f59e0b;
+            --primary-dark: #d97706;
+            --secondary: #ec4899;
+            --accent: #10b981;
+            --earth: #78716c;
+            --earth-light: #f5f5f4;
+            --earth-dark: #1c1917;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--earth-dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Header */
+        .top-bar {
+            background: #fef7ec;
+            padding: 0.5rem 0;
+            font-size: 0.875rem;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .top-bar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.75rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--earth-dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover {
+            color: var(--primary);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--earth);
+            border: 1px solid var(--earth);
+        }
+
+        .btn-outline:hover {
+            background: var(--earth);
+            color: white;
+        }
+
+        .cart-btn {
+            position: relative;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--secondary);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="pattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23pattern)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        /* Categories Grid */
+        .categories {
+            padding: 4rem 0;
+            background: var(--earth-light);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 3rem;
+            color: var(--earth-dark);
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .category-image {
+            height: 200px;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+
+        .category-info {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .category-info h3 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .category-info p {
+            color: var(--earth);
+        }
+
+        /* Products Section */
+        .products {
+            padding: 4rem 0;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .product-image {
+            height: 250px;
+            background: linear-gradient(135deg, #fef7ec, #fdecd3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: var(--secondary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-category {
+            color: var(--earth);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-name {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--earth-dark);
+        }
+
+        .product-price {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .price-current {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .price-original {
+            font-size: 1rem;
+            color: var(--earth);
+            text-decoration: line-through;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            flex: 1;
+        }
+
+        /* About Section */
+        .about {
+            padding: 4rem 0;
+            background: var(--earth-light);
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text h2 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            color: var(--earth-dark);
+        }
+
+        .about-text p {
+            font-size: 1.125rem;
+            color: var(--earth);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .about-image {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border-radius: 1rem;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4rem;
+        }
+
+        /* Newsletter */
+        .newsletter {
+            padding: 4rem 0;
+            background: var(--earth-dark);
+            color: white;
+            text-align: center;
+        }
+
+        .newsletter h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .newsletter p {
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .newsletter-form {
+            display: flex;
+            max-width: 400px;
+            margin: 0 auto;
+            gap: 0.5rem;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 0.375rem;
+            font-size: 1rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--earth-dark);
+            color: white;
+            padding: 3rem 0 1rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .footer-section a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 1rem;
+            text-align: center;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .category-grid,
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .newsletter-form {
+                flex-direction: column;
+            }
+            
+            .top-bar-content {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        /* Cart Sidebar */
+        .cart-sidebar {
+            position: fixed;
+            right: -400px;
+            top: 0;
+            width: 400px;
+            height: 100vh;
+            background: white;
+            box-shadow: -4px 0 15px rgba(0,0,0,0.1);
+            z-index: 1000;
+            transition: right 0.3s;
+            overflow-y: auto;
+        }
+
+        .cart-sidebar.active {
+            right: 0;
+        }
+
+        .cart-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .cart-content {
+            padding: 1.5rem;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .cart-item-image {
+            width: 80px;
+            height: 80px;
+            background: var(--earth-light);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .cart-item-price {
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #e5e7eb;
+            background: white;
+            border-radius: 0.25rem;
+            cursor: pointer;
+        }
+
+        .cart-total {
+            border-top: 2px solid var(--primary);
+            padding-top: 1rem;
+            margin-top: 1rem;
+        }
+
+        .cart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .cart-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="top-bar-content">
+                <span><i class="fas fa-phone"></i> Contacto: +51 999 888 777</span>
+                <span><i class="fas fa-truck"></i> Envío gratis en compras mayores a S/. 120</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="#" class="logo">Chinasaqra Andina</a>
+                
+                <ul class="nav-menu">
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#tienda">Tienda</a></li>
+                    <li><a href="#categorias">Categorías</a></li>
+                    <li><a href="#nosotros">Nosotros</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+
+                <div class="nav-actions">
+                    <button class="btn btn-outline">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="btn btn-outline cart-btn" onclick="toggleCart()">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count" id="cartCount">2</span>
+                    </button>
+                    <button class="btn btn-outline">
+                        <i class="fas fa-user"></i>
+                    </button>
+                    <button class="mobile-menu-btn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="inicio">
+        <div class="container">
+            <div class="hero-content animate-in">
+                <h1>Chinasaqra Andina</h1>
+                <p>Auténtica moda andina con tradición milenaria</p>
+                <a href="#tienda" class="btn btn-primary">
+                    <i class="fas fa-shopping-bag"></i>
+                    Descubrir Colección
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="categories" id="categorias">
+        <div class="container">
+            <h2 class="section-title">Nuestras Categorías</h2>
+            <div class="category-grid">
+                <div class="category-card" onclick="goToCategory('ponchos')">
+                    <div class="category-image">
+                        <i class="fas fa-tshirt"></i>
+                    </div>
+                    <div class="category-info">
+                        <h3>Ponchos</h3>
+                        <p>24 productos • Desde S/. 89</p>
+                    </div>
+                </div>
+
+                <div class="category-card" onclick="goToCategory('polleras')">
+                    <div class="category-image">
+                        <i class="fas fa-female"></i>
+                    </div>
+                    <div class="category-info">
+                        <h3>Polleras</h3>
+                        <p>18 productos • Desde S/. 75</p>
+                    </div>
+                </div>
+
+                <div class="category-card" onclick="goToCategory('chalecos')">
+                    <div class="category-image">
+                        <i class="fas fa-vest"></i>
+                    </div>
+                    <div class="category-info">
+                        <h3>Chalecos</h3>
+                        <p>15 productos • Desde S/. 95</p>
+                    </div>
+                </div>
+
+                <div class="category-card" onclick="goToCategory('chales')">
+                    <div class="category-image">
+                        <i class="fas fa-scarf"></i>
+                    </div>
+                    <div class="category-info">
+                        <h3>Chales</h3>
+                        <p>12 productos • Desde S/. 45</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products -->
+    <section class="products" id="tienda">
+        <div class="container">
+            <h2 class="section-title">Productos Destacados</h2>
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-image">
+                        <div class="product-badge">Nuevo</div>
+                        <i class="fas fa-tshirt"></i>
+                    </div>
+                    <div class="product-info">
+                        <p class="product-category">Ponchos</p>
+                        <h3 class="product-name">Poncho Andino Tradicional</h3>
+                        <div class="product-price">
+                            <span class="price-current">S/. 149</span>
+                            <span class="price-original">S/. 189</span>
+                        </div>
+                        <div class="product-actions">
+                            <button class="btn btn-outline btn-sm">Vista Rápida</button>
+                            <button class="btn btn-primary btn-sm" onclick="addToCart('Poncho Andino', 149)">
+                                <i class="fas fa-cart-plus"></i> Agregar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <div class="product-badge" style="background: var(--accent);">Popular</div>
+                        <i class="fas fa-female"></i>
+                    </div>
+                    <div class="product-info">
+                        <p class="product-category">Polleras</p>
+                        <h3 class="product-name">Pollera Cusqueña Bordada</h3>
+                        <div class="product-price">
+                            <span class="price-current">S/. 125</span>
+                        </div>
+                        <div class="product-actions">
+                            <button class="btn btn-outline btn-sm">Vista Rápida</button>
+                            <button class="btn btn-primary btn-sm" onclick="addToCart('Pollera Cusqueña', 125)">
+                                <i class="fas fa-cart-plus"></i> Agregar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <i class="fas fa-vest"></i>
+                    </div>
+                    <div class="product-info">
+                        <p class="product-category">Chalecos</p>
+                        <h3 class="product-name">Chaleco de Alpaca Premium</h3>
+                        <div class="product-price">
+                            <span class="price-current">S/. 199</span>
+                        </div>
+                        <div class="product-actions">
+                            <button class="btn btn-outline btn-sm">Vista Rápida</button>
+                            <button class="btn btn-primary btn-sm" onclick="addToCart('Chaleco Alpaca', 199)">
+                                <i class="fas fa-cart-plus"></i> Agregar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <div class="product-badge" style="background: var(--secondary);">Oferta</div>
+                        <i class="fas fa-scarf"></i>
+                    </div>
+                    <div class="product-info">
+                        <p class="product-category">Chales</p>
+                        <h3 class="product-name">Chal Tejido a Mano</h3>
+                        <div class="product-price">
+                            <span class="price-current">S/. 65</span>
+                            <span class="price-original">S/. 85</span>
+                        </div>
+                        <div class="product-actions">
+                            <button class="btn btn-outline btn-sm">Vista Rápida</button>
+                            <button class="btn btn-primary btn-sm" onclick="addToCart('Chal Tejido', 65)">
+                                <i class="fas fa-cart-plus"></i> Agregar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section class="about" id="nosotros">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>Nuestra Historia</h2>
+                    <p>
+                        Chinasaqra Andina nace del amor por preservar las tradiciones textiles ancestrales del Perú. 
+                        Cada prenda que creamos lleva consigo siglos de conocimiento transmitido de generación en generación.
+                    </p>
+                    <p>
+                        Trabajamos directamente con artesanas de comunidades andinas, garantizando técnicas auténticas 
+                        y materiales de la más alta calidad como la lana de alpaca y vicuña.
+                    </p>
+                    <a href="#contacto" class="btn btn-primary">Conoce Más</a>
+                </div>
+                <div class="about-image">
+                    <i class="fas fa-mountain"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter">
+        <div class="container">
+            <h2>Mantente al día con nuestras novedades</h2>
+            <p>Recibe noticias sobre nuevas colecciones y ofertas especiales</p>
+            <div class="newsletter-form">
+                <input type="email" class="newsletter-input" placeholder="Tu email">
+                <button class="btn btn-primary">Suscribirse</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contacto">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Chinasaqra Andina</h3>
+                    <p style="color: rgba(255,255,255,0.8); margin-bottom: 1rem;">
+                        Auténtica moda andina con tradición milenaria
+                    </p>
+                    <div style="display: flex; gap: 1rem; font-size: 1.5rem;">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Tienda</h3>
+                    <a href="#">Ponchos</a>
+                    <a href="#">Polleras</a>
+                    <a href="#">Chalecos</a>
+                    <a href="#">Chales</a>
+                    <a href="#">Ofertas</a>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Ayuda</h3>
+                    <a href="#">Envíos</a>
+                    <a href="#">Devoluciones</a>
+                    <a href="#">Tallas</a>
+                    <a href="#">Cuidado de prendas</a>
+                    <a href="#">FAQ</a>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <a href="tel:+51999888777">
+                        <i class="fas fa-phone"></i> +51 999 888 777
+                    </a>
+                    <a href="mailto:info@chinasaqraandina.com">
+                        <i class="fas fa-envelope"></i> info@chinasaqraandina.com
+                    </a>
+                    <a href="#">
+                        <i class="fas fa-map-marker-alt"></i> Lima, Perú
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 Chinasaqra Andina. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>Tu Carrito (2)</h3>
+            <button class="cart-close" onclick="toggleCart()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="cart-content">
+            <div class="cart-item">
+                <div class="cart-item-image">
+                    <i class="fas fa-tshirt"></i>
+                </div>
+                <div class="cart-item-info">
+                    <div class="cart-item-name">Poncho Andino Tradicional</div>
+                    <div class="cart-item-price">S/. 149</div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="updateQuantity('poncho', -1)">-</button>
+                        <span id="poncho-qty">1</span>
+                        <button class="quantity-btn" onclick="updateQuantity('poncho', 1)">+</button>
+                        <button class="btn btn-outline btn-sm" style="margin-left: auto;" onclick="removeItem('poncho')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cart-item">
+                <div class="cart-item-image">
+                    <i class="fas fa-female"></i>
+                </div>
+                <div class="cart-item-info">
+                    <div class="cart-item-name">Pollera Cusqueña Bordada</div>
+                    <div class="cart-item-price">S/. 125</div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="updateQuantity('pollera', -1)">-</button>
+                        <span id="pollera-qty">1</span>
+                        <button class="quantity-btn" onclick="updateQuantity('pollera', 1)">+</button>
+                        <button class="btn btn-outline btn-sm" style="margin-left: auto;" onclick="removeItem('pollera')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cart-total">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <span>Subtotal:</span>
+                    <span id="subtotal">S/. 274</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <span>Envío:</span>
+                    <span style="color: var(--accent);">Gratis</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 1.125rem; padding-top: 0.5rem; border-top: 1px solid #e5e7eb;">
+                    <span>Total:</span>
+                    <span id="total">S/. 274</span>
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem;">
+                <button class="btn btn-primary" style="width: 100%; margin-bottom: 0.5rem;">
+                    <i class="fas fa-credit-card"></i>
+                    Finalizar Compra
+                </button>
+                <button class="btn btn-outline" style="width: 100%;" onclick="toggleCart()">
+                    Seguir Comprando
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Cart functionality
+        let cartItems = [
+            { id: 'poncho', name: 'Poncho Andino Tradicional', price: 149, quantity: 1 },
+            { id: 'pollera', name: 'Pollera Cusqueña Bordada', price: 125, quantity: 1 }
+        ];
+
+        function toggleCart() {
+            const sidebar = document.getElementById('cartSidebar');
+            const overlay = document.getElementById('cartOverlay');
+            
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        function addToCart(name, price) {
+            // Simulate adding to cart
+            alert(`¡${name} agregado al carrito por S/. ${price}!`);
+            
+            // Update cart count
+            const cartCount = document.getElementById('cartCount');
+            cartCount.textContent = parseInt(cartCount.textContent) + 1;
+        }
+
+        function updateQuantity(itemId, change) {
+            const item = cartItems.find(i => i.id === itemId);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity < 1) item.quantity = 1;
+                
+                document.getElementById(itemId + '-qty').textContent = item.quantity;
+                updateCartTotals();
+            }
+        }
+
+        function removeItem(itemId) {
+            cartItems = cartItems.filter(item => item.id !== itemId);
+            // Re-render cart (simplified)
+            updateCartTotals();
+            
+            // Update cart count
+            const cartCount = document.getElementById('cartCount');
+            cartCount.textContent = parseInt(cartCount.textContent) - 1;
+        }
+
+        function updateCartTotals() {
+            const subtotal = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+            document.getElementById('subtotal').textContent = `S/. ${subtotal}`;
+            document.getElementById('total').textContent = `S/. ${subtotal}`;
+        }
+
+        function goToCategory(category) {
+            alert(`Navegando a categoría: ${category}`);
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all product cards and category cards
+        document.querySelectorAll('.product-card, .category-card, .about-content').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
