@@ -11,7 +11,9 @@ function Header() {
     toggleLoginModal,
     toggleCartSidebar,
     toggleMobileMenu,
-    cartCount
+    cartCount,
+    isAuthenticated,
+    user
   } = useApp();
 
   const scrollToSection = (sectionId) => {
@@ -116,10 +118,15 @@ function Header() {
               </button>
               <button className="btn btn-outline cart-btn" onClick={toggleCartSidebar}>
                 <i className="fas fa-shopping-cart"></i>
-                <span className="cart-count">{cartCount}</span>
+                {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
               </button>
-              <button className="btn btn-outline" onClick={toggleLoginModal}>
-                <i className="fas fa-user"></i>
+              <button
+                className={`btn ${isAuthenticated ? 'btn-primary' : 'btn-outline'}`}
+                onClick={toggleLoginModal}
+                title={isAuthenticated ? user?.email : 'Iniciar Sesión'}
+              >
+                <i className={`fas ${isAuthenticated ? 'fa-user-circle' : 'fa-user'}`}></i>
+                {isAuthenticated && <span className="user-indicator"></span>}
               </button>
               <button className="mobile-menu-btn" onClick={toggleMobileMenu}>
                 <i className="fas fa-bars"></i>

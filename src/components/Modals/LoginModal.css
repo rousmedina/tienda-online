@@ -176,3 +176,91 @@
   background: var(--primary);
   color: white;
 }
+
+/* User Profile Section */
+.user-profile-section {
+  padding: 2rem 0;
+  text-align: center;
+}
+
+.user-email {
+  font-size: 1.1rem;
+  color: var(--text-dark);
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.user-email i {
+  font-size: 2rem;
+  color: var(--primary);
+}
+
+.user-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.user-actions .btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+/* Media queries para responsividad */
+@media (max-width: 768px) {
+  .login-modal-content {
+    width: 95%;
+    max-width: none;
+    padding: 1.5rem;
+    max-height: 95vh;
+  }
+
+  .login-modal-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .login-modal-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .login-tabs {
+    margin-bottom: 1.5rem;
+  }
+
+  .login-tab {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  .form-label {
+    font-size: 0.9rem;
+  }
+
+  .form-input {
+    padding: 0.6rem;
+    font-size: 0.95rem;
+  }
+
+  .login-divider {
+    margin: 1rem 0;
+  }
+
+  .social-login {
+    gap: 0.5rem;
+  }
+
+  .social-btn {
+    padding: 0.6rem;
+    font-size: 1rem;
+  }
+}

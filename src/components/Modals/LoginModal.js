@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { createPortal } from 'react-dom';
 import { useApp } from '../../context/AppContext';
-import { signIn, signUp } from '../../services/authService';
+import { useBodyScroll } from '../../hooks/useBodyScroll';
+import { signIn, signUp, signOut, resetPassword } from '../../services/authService';
 import './LoginModal.css';
 
 function LoginModal() {
-  const { state, toggleLoginModal, setLoginTab, showToast } = useApp();
+  const { state, toggleLoginModal, setLoginTab, showToast, user, isAuthenticated } = useApp();
   const [loginData, setLoginData] = useState({ email: '', password: '', remember: false });
   const [registerData, setRegisterData] = useState({
     name: '',
@@ -14,7 +14,12 @@ function LoginModal() {
     confirmPassword: '',
     acceptTerms: false
   });
+  const [resetEmail, setResetEmail] = useState('');
+  const [showResetForm, setShowResetForm] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  // Usar el hook centralizado para manejar el scroll
+  useBodyScroll(state.isLoginModalOpen);
 
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) {
@@ -30,7 +35,7 @@ function LoginModal() {
     e.preventDefault();
     setLoading(true);
 
-    const { data, error } = await signIn(loginData.email, loginData.password);
+    const { error } = await signIn(loginData.email, loginData.password);
 
     if (error) {
       showToast(error, 'error');
@@ -59,7 +64,7 @@ function LoginModal() {
 
     setLoading(true);
 
-    const { data, error } = await signUp(
+    const { error } = await signUp(
       registerData.email,
       registerData.password,
       registerData.name
@@ -81,23 +86,76 @@ function LoginModal() {
     alert(`Iniciar sesión con ${provider}`);
   };
 
-  if (!state.isLoginModalOpen) return null;
+  const handleLogout = async () => {
+    const { error } = await signOut();
+    if (error) {
+      showToast('Error al cerrar sesión', 'error');
+    } else {
+      showToast('Sesión cerrada exitosamente', 'success');
+      toggleLoginModal();
+    }
+  };
 
-  const portalRoot = document.getElementById('portal-root');
-  if (!portalRoot) return null;
+  const handlePasswordReset = async (e) => {
+    e.preventDefault();
+    setLoading(true);
 
-  return createPortal(
-    <div className="login-modal active" onClick={handleOverlayClick}>
+    const { error } = await resetPassword(resetEmail);
+
+    if (error) {
+      showToast(error, 'error');
+    } else {
+      showToast('Te hemos enviado un correo para restablecer tu contraseña', 'success');
+      setShowResetForm(false);
+      setResetEmail('');
+    }
+
+    setLoading(false);
+  };
+
+  return (
+    <div className={`login-modal ${state.isLoginModalOpen ? 'active' : ''}`} onClick={handleOverlayClick}>
       <div className="login-modal-content">
         <button className="login-modal-close" onClick={toggleLoginModal}>
           <i className="fas fa-times"></i>
         </button>
-        
+
         <div className="login-modal-header">
-          <h2>Bienvenido</h2>
+          <h2>{isAuthenticated ? `Hola, ${user?.email}` : 'Bienvenido'}</h2>
         </div>
 
-        <div className="login-tabs">
+        {isAuthenticated ? (
+          <div className="user-profile-section">
+            <p className="user-email">
+              <i className="fas fa-user-circle"></i> {user?.email}
+            </p>
+            <div className="user-actions">
+              <button
+                className="btn btn-outline"
+                onClick={() => {
+                  toggleLoginModal();
+                  window.location.href = '/perfil';
+                }}
+              >
+                <i className="fas fa-user-edit"></i> Mi Perfil
+              </button>
+              <button
+                className="btn btn-outline"
+                onClick={() => {
+                  toggleLoginModal();
+                  window.location.href = '/mis-pedidos';
+                }}
+              >
+                <i className="fas fa-shopping-bag"></i> Mis Pedidos
+              </button>
+              <button className="btn btn-primary" onClick={handleLogout}>
+                <i className="fas fa-sign-out-alt"></i> Cerrar Sesión
+              </button>
+            </div>
+          </div>
+        ) : (
+          <>
+            <div className="login-tabs">
           <button 
             className={`login-tab ${state.loginTab === 'login' ? 'active' : ''}`}
             onClick={() => handleTabSwitch('login')}
@@ -150,10 +208,41 @@ function LoginModal() {
               {loading ? 'Cargando...' : 'Iniciar Sesión'}
             </button>
             <div className="login-actions">
-              <button type="button" className="forgot-password" onClick={() => alert('Funcionalidad de recuperación de contraseña próximamente')}>
+              <button type="button" className="forgot-password" onClick={() => setShowResetForm(true)}>
                 ¿Olvidaste tu contraseña?
               </button>
             </div>
+          </form>
+        )}
+
+        {/* Password Reset Form */}
+        {state.loginTab === 'login' && showResetForm && (
+          <form className="login-form active" onSubmit={handlePasswordReset}>
+            <button
+              type="button"
+              className="back-button"
+              onClick={() => setShowResetForm(false)}
+            >
+              <i className="fas fa-arrow-left"></i> Volver
+            </button>
+            <h3 style={{ marginTop: '20px', marginBottom: '10px' }}>Recuperar contraseña</h3>
+            <p style={{ marginBottom: '20px', color: '#666', fontSize: '14px' }}>
+              Ingresa tu correo y te enviaremos un enlace para restablecer tu contraseña
+            </p>
+            <div className="form-group">
+              <label className="form-label">Email</label>
+              <input
+                type="email"
+                className="form-input"
+                placeholder="tu@email.com"
+                value={resetEmail}
+                onChange={(e) => setResetEmail(e.target.value)}
+                required
+              />
+            </div>
+            <button type="submit" className="btn btn-primary login-submit-btn" disabled={loading}>
+              {loading ? 'Enviando...' : 'Enviar enlace'}
+            </button>
           </form>
         )}
 
@@ -224,17 +313,18 @@ function LoginModal() {
           <span>o continuar con</span>
         </div>
 
-        <div className="social-login">
-          <button className="social-btn" onClick={() => handleSocialLogin('Google')}>
-            <i className="fab fa-google"></i>
-          </button>
-          <button className="social-btn" onClick={() => handleSocialLogin('Facebook')}>
-            <i className="fab fa-facebook-f"></i>
-          </button>
-        </div>
+            <div className="social-login">
+              <button className="social-btn" onClick={() => handleSocialLogin('Google')}>
+                <i className="fab fa-google"></i>
+              </button>
+              <button className="social-btn" onClick={() => handleSocialLogin('Facebook')}>
+                <i className="fab fa-facebook-f"></i>
+              </button>
+            </div>
+          </>
+        )}
       </div>
-    </div>,
-    portalRoot
+    </div>
   );
 }
 

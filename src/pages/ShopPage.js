@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { getAllProducts } from '../services/productService';
+import { getImageUrl } from '../services/storageService';
 import Loading from '../components/Loading/Loading';
 import './ShopPage.css';
 
@@ -21,16 +22,19 @@ function ShopPage() {
   // Cargar productos de Supabase
   useEffect(() => {
     loadProducts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadProducts = async () => {
     setLoading(true);
     const { data, error } = await getAllProducts();
 
-    if (error) {
-      showToast('Error al cargar productos', 'error');
-      console.error('Error loading products:', error);
-      // Usar productos de respaldo si falla
+    if (error || !data || data.length === 0) {
+      if (error) {
+        console.error('Error loading products:', error);
+      }
+      console.log('Usando productos de respaldo');
+      // Usar productos de respaldo si falla o no hay datos
       setAllProducts([
     {
       id: 'poncho-tradicional',
@@ -43,7 +47,8 @@ function ShopPage() {
       icon: 'fas fa-tshirt',
       sizes: ['S', 'M', 'L', 'XL'],
       rating: 4.8,
-      sales: 245
+      sales: 245,
+      stock: 50
     },
     {
       id: 'pollera-cusqueña',
@@ -55,7 +60,8 @@ function ShopPage() {
       icon: 'fas fa-female',
       sizes: ['S', 'M', 'L', 'XL'],
       rating: 4.9,
-      sales: 312
+      sales: 312,
+      stock: 35
     },
     {
       id: 'chaleco-alpaca',
@@ -65,7 +71,8 @@ function ShopPage() {
       icon: 'fas fa-vest',
       sizes: ['S', 'M', 'L', 'XL', 'XXL'],
       rating: 5.0,
-      sales: 189
+      sales: 189,
+      stock: 20
     },
     {
       id: 'chal-tejido',
@@ -78,7 +85,8 @@ function ShopPage() {
       icon: 'fas fa-scarf',
       sizes: ['Único'],
       rating: 4.7,
-      sales: 421
+      sales: 421,
+      stock: 60
     },
     {
       id: 'poncho-colorido',
@@ -88,7 +96,8 @@ function ShopPage() {
       icon: 'fas fa-tshirt',
       sizes: ['M', 'L', 'XL'],
       rating: 4.6,
-      sales: 156
+      sales: 156,
+      stock: 25
     },
     {
       id: 'pollera-fiesta',
@@ -101,7 +110,8 @@ function ShopPage() {
       icon: 'fas fa-female',
       sizes: ['S', 'M', 'L'],
       rating: 4.8,
-      sales: 203
+      sales: 203,
+      stock: 15
     },
     {
       id: 'chaleco-lana',
@@ -111,7 +121,8 @@ function ShopPage() {
       icon: 'fas fa-vest',
       sizes: ['S', 'M', 'L', 'XL'],
       rating: 4.5,
-      sales: 178
+      sales: 178,
+      stock: 30
     },
     {
       id: 'chal-alpaca',
@@ -121,13 +132,14 @@ function ShopPage() {
       icon: 'fas fa-scarf',
       sizes: ['Único'],
       rating: 4.9,
-      sales: 267
+      sales: 267,
+      stock: 40
     }
       ]);
     } else {
       // Mapear datos de Supabase al formato del componente
       const mappedProducts = data.map(product => ({
-        id: product.id,
+        id: product.slug || product.id, // Usar slug si está disponible, sino UUID
         name: product.name,
         category: product.category,
         price: parseFloat(product.price),
@@ -136,8 +148,13 @@ function ShopPage() {
         badgeColor: product.badge_color,
         icon: getCategoryIcon(product.category),
         sizes: product.sizes || [],
+        colors: product.colors || [],
         rating: parseFloat(product.rating) || 0,
-        sales: product.sales || 0
+        sales: product.sales || 0,
+        stock: product.stock || 50,
+        description: product.description,
+        image_url: product.image_url || getImageUrl(product.image_path),
+        images: product.images || []
       }));
       setAllProducts(mappedProducts);
     }
@@ -218,11 +235,21 @@ function ShopPage() {
   };
 
   const handleAddToCart = (product) => {
+    const stock = product.stock || 50; // Stock por defecto si no está definido
+
+    // Verificar si hay stock disponible
+    if (stock <= 0) {
+      showToast('Producto sin stock disponible', 'error');
+      return;
+    }
+
     addToCart({
       id: product.id,
       name: product.name,
-      price: product.price
+      price: product.price,
+      stock: stock
     });
+
     showToast(`${product.name} agregado al carrito`, 'success');
   };
 
@@ -384,7 +411,11 @@ function ShopPage() {
                       >
                         <i className={`${state.wishlist?.some(item => item.id === product.id) ? 'fas' : 'far'} fa-heart`}></i>
                       </button>
-                      <i className={product.icon}></i>
+                      {product.image_url ? (
+                        <img src={product.image_url} alt={product.name} />
+                      ) : (
+                        <i className={product.icon}></i>
+                      )}
                     </div>
                     <div className="product-info">
                       <p className="product-category">{product.category}</p>
@@ -408,12 +439,23 @@ function ShopPage() {
                           <span className="price-original">S/. {product.originalPrice}</span>
                         )}
                       </div>
-                      <button
-                        className="btn btn-primary add-to-cart-btn"
-                        onClick={() => handleAddToCart(product)}
-                      >
-                        <i className="fas fa-cart-plus"></i> Agregar al Carrito
-                      </button>
+                      {product.stock <= 5 && product.stock > 0 && (
+                        <p className="stock-warning">
+                          <i className="fas fa-exclamation-circle"></i> Solo quedan {product.stock} unidades
+                        </p>
+                      )}
+                      {product.stock === 0 ? (
+                        <button className="btn btn-outline add-to-cart-btn" disabled>
+                          <i className="fas fa-times-circle"></i> Sin Stock
+                        </button>
+                      ) : (
+                        <button
+                          className="btn btn-primary add-to-cart-btn"
+                          onClick={() => handleAddToCart(product)}
+                        >
+                          <i className="fas fa-cart-plus"></i> Agregar al Carrito
+                        </button>
+                      )}
                     </div>
                   </div>
                 ))}

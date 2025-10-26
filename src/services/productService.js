@@ -5,8 +5,7 @@ export const getAllProducts = async (filters = {}) => {
   try {
     let query = supabase
       .from('products')
-      .select('*')
-      .eq('is_active', true);
+      .select('*');
 
     // Filtro por categoría
     if (filters.category && filters.category !== 'todos') {
@@ -60,14 +59,24 @@ export const getAllProducts = async (filters = {}) => {
   }
 };
 
-// Obtener un producto por ID
+// Obtener un producto por ID o slug
 export const getProductById = async (id) => {
   try {
-    const { data, error } = await supabase
+    // Intentar buscar por UUID primero
+    let query = supabase
       .from('products')
-      .select('*')
-      .eq('id', id)
-      .single();
+      .select('*');
+
+    // Verificar si es un UUID (contiene guiones) o un slug
+    if (id.includes('-') && id.length > 36) {
+      // Es un slug (ej: "poncho-tradicional")
+      query = query.eq('slug', id);
+    } else {
+      // Es un UUID
+      query = query.eq('id', id);
+    }
+
+    const { data, error } = await query.single();
 
     if (error) throw error;
     return { data, error: null };
@@ -83,7 +92,6 @@ export const getProductsByCategory = async (category) => {
       .from('products')
       .select('*')
       .eq('category', category)
-      .eq('is_active', true)
       .order('created_at', { ascending: false });
 
     if (error) throw error;
@@ -100,7 +108,6 @@ export const searchProducts = async (searchTerm) => {
       .from('products')
       .select('*')
       .or(`name.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%,category.ilike.%${searchTerm}%`)
-      .eq('is_active', true)
       .limit(10);
 
     if (error) throw error;
@@ -116,7 +123,6 @@ export const getFeaturedProducts = async (limit = 4) => {
     const { data, error } = await supabase
       .from('products')
       .select('*')
-      .eq('is_active', true)
       .order('rating', { ascending: false })
       .limit(limit);
 
@@ -133,7 +139,6 @@ export const getBestSellers = async (limit = 4) => {
     const { data, error } = await supabase
       .from('products')
       .select('*')
-      .eq('is_active', true)
       .order('sales', { ascending: false })
       .limit(limit);
 

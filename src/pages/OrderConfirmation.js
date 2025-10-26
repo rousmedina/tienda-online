@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useApp } from '../context/AppContext';
 import './OrderConfirmation.css';
 
 function OrderConfirmation() {
@@ -30,7 +29,7 @@ function OrderConfirmation() {
   };
 
   const handleViewOrders = () => {
-    alert('Funcionalidad de historial de pedidos próximamente');
+    navigate('/mis-pedidos');
   };
 
   const handleDownloadInvoice = () => {

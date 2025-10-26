@@ -1,7 +1,7 @@
 import React from 'react';
-import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../../context/AppContext';
+import { useBodyScroll } from '../../hooks/useBodyScroll';
 import './CartSidebar.css';
 
 function CartSidebar() {
@@ -15,6 +15,9 @@ function CartSidebar() {
     cartCount
   } = useApp();
 
+  // Usar el hook centralizado para manejar el scroll
+  useBodyScroll(state.isCartSidebarOpen);
+
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) {
       toggleCartSidebar();
@@ -26,15 +29,10 @@ function CartSidebar() {
     navigate('/checkout');
   };
 
-  if (!state.isCartSidebarOpen) return null;
-
-  const portalRoot = document.getElementById('portal-root');
-  if (!portalRoot) return null;
-
-  return createPortal(
+  return (
     <>
-      <div className="cart-overlay active" onClick={handleOverlayClick}></div>
-      <div className="cart-sidebar active">
+      <div className={`cart-overlay ${state.isCartSidebarOpen ? 'active' : ''}`} onClick={handleOverlayClick}></div>
+      <div className={`cart-sidebar ${state.isCartSidebarOpen ? 'active' : ''}`}>
         <div className="cart-header">
           <h3>Tu Carrito ({cartCount})</h3>
           <button className="cart-close" onClick={toggleCartSidebar}>
@@ -110,8 +108,7 @@ function CartSidebar() {
           )}
         </div>
       </div>
-    </>,
-    portalRoot
+    </>
   );
 }
 

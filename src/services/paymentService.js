@@ -126,7 +126,7 @@ export const maskCardNumber = (cardNumber) => {
  * En producción, esto se comunicaría con la API de la pasarela de pago
  */
 export const processCardPayment = async (paymentData) => {
-  const { cardNumber, cardName, expirationDate, cvv, amount } = paymentData;
+  const { cardNumber, expirationDate, cvv, amount } = paymentData;
 
   // Validaciones
   if (!validateCardNumber(cardNumber)) {

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../../context/AppContext';
 import { getFeaturedProducts } from '../../services/productService';
+import { getImageUrl } from '../../services/storageService';
 import Loading from '../Loading/Loading';
 import './Products.css';
 
@@ -10,10 +11,6 @@ function Products() {
   const { addToCart, showToast } = useApp();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    loadFeaturedProducts();
-  }, []);
 
   const loadFeaturedProducts = async () => {
     const { data, error } = await getFeaturedProducts(4);
@@ -69,7 +66,9 @@ function Products() {
         originalPrice: product.original_price ? parseFloat(product.original_price) : null,
         badge: product.badge,
         badgeColor: product.badge_color,
-        icon: getCategoryIcon(product.category)
+        icon: getCategoryIcon(product.category),
+        image_url: product.image_url || getImageUrl(product.image_path),
+        images: product.images || []
       }));
       setProducts(mappedProducts);
     } else {
@@ -79,6 +78,11 @@ function Products() {
 
     setLoading(false);
   };
+
+  useEffect(() => {
+    loadFeaturedProducts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Helper para obtener el ícono según categoría
   const getCategoryIcon = (category) => {
@@ -116,14 +120,18 @@ function Products() {
             <div key={product.id} className="product-card">
               <div className="product-image">
                 {product.badge && (
-                  <div 
-                    className="product-badge" 
+                  <div
+                    className="product-badge"
                     style={{ background: product.badgeColor }}
                   >
                     {product.badge}
                   </div>
                 )}
-                <i className={product.icon}></i>
+                {product.image_url ? (
+                  <img src={product.image_url} alt={product.name} />
+                ) : (
+                  <i className={product.icon}></i>
+                )}
               </div>
               <div className="product-info">
                 <p className="product-category">{product.category}</p>

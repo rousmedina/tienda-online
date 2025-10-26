@@ -119,19 +119,41 @@ export const getOrderByNumber = async (orderNumber) => {
 // Obtener órdenes de un usuario
 export const getUserOrders = async (userId) => {
   try {
-    const { data, error } = await supabase
+    // Primero obtener las órdenes
+    const { data: orders, error: ordersError } = await supabase
       .from('orders')
-      .select(`
-        *,
-        order_items (*)
-      `)
+      .select('*')
       .eq('user_id', userId)
       .order('created_at', { ascending: false });
 
-    if (error) throw error;
-    return { data, error: null };
+    if (ordersError) throw ordersError;
+
+    // Si no hay órdenes, retornar array vacío
+    if (!orders || orders.length === 0) {
+      return { data: [], error: null };
+    }
+
+    // Obtener items para cada orden
+    const ordersWithItems = await Promise.all(
+      orders.map(async (order) => {
+        const { data: items, error: itemsError } = await supabase
+          .from('order_items')
+          .select('*')
+          .eq('order_id', order.id);
+
+        if (itemsError) {
+          console.error('Error loading items for order:', order.id, itemsError);
+          return { ...order, items: [] };
+        }
+
+        return { ...order, items: items || [] };
+      })
+    );
+
+    return { data: ordersWithItems, error: null };
   } catch (error) {
-    return { data: null, error: error.message };
+    console.error('Error in getUserOrders:', error);
+    return { data: [], error: error.message };
   }
 };
 

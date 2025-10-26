@@ -1,10 +1,13 @@
 import React from 'react';
-import { createPortal } from 'react-dom';
 import { useApp } from '../../context/AppContext';
+import { useBodyScroll } from '../../hooks/useBodyScroll';
 import './MobileMenu.css';
 
 function MobileMenu() {
   const { state, toggleMobileMenu } = useApp();
+
+  // Usar el hook centralizado para manejar el scroll
+  useBodyScroll(state.isMobileMenuOpen);
 
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) {
@@ -31,15 +34,10 @@ function MobileMenu() {
     { id: 'contacto', label: 'Contacto' }
   ];
 
-  if (!state.isMobileMenuOpen) return null;
-
-  const portalRoot = document.getElementById('portal-root');
-  if (!portalRoot) return null;
-
-  return createPortal(
+  return (
     <>
-      <div className="mobile-overlay active" onClick={handleOverlayClick}></div>
-      <div className="mobile-menu active">
+      <div className={`mobile-overlay ${state.isMobileMenuOpen ? 'active' : ''}`} onClick={handleOverlayClick}></div>
+      <div className={`mobile-menu ${state.isMobileMenuOpen ? 'active' : ''}`}>
         <div className="mobile-menu-header">
           <a 
             href="#inicio" 
@@ -71,8 +69,7 @@ function MobileMenu() {
           ))}
         </div>
       </div>
-    </>,
-    portalRoot
+    </>
   );
 }
 
